@@ -13,8 +13,7 @@
 		E6253C9E2A9342EF003B8B1F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6253C9C2A9342EF003B8B1F /* Main.storyboard */; };
 		E6253CA02A9342F0003B8B1F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6253C9F2A9342F0003B8B1F /* Assets.xcassets */; };
 		E6253CA32A9342F0003B8B1F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6253CA12A9342F0003B8B1F /* LaunchScreen.storyboard */; };
-		E6253CAC2A9343C3003B8B1F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6253CAB2A9343C3003B8B1F /* SnapKit */; };
-		E6253CAE2A9343C3003B8B1F /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E6253CAD2A9343C3003B8B1F /* SnapKit-Dynamic */; };
+		E6253CB12A93445B003B8B1F /* HttpRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CB02A93445B003B8B1F /* HttpRequester.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +25,7 @@
 		E6253C9F2A9342F0003B8B1F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E6253CA22A9342F0003B8B1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6253CA42A9342F0003B8B1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E6253CB02A93445B003B8B1F /* HttpRequester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpRequester.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,8 +33,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6253CAC2A9343C3003B8B1F /* SnapKit in Frameworks */,
-				E6253CAE2A9343C3003B8B1F /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +58,8 @@
 		E6253C952A9342EF003B8B1F /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				E6253CB22A9346C6003B8B1F /* Core */,
+				E6253CAF2A93444D003B8B1F /* Networking */,
 				E6253C962A9342EF003B8B1F /* AppDelegate.swift */,
 				E6253C982A9342EF003B8B1F /* SceneDelegate.swift */,
 				E6253C9A2A9342EF003B8B1F /* MainViewController.swift */,
@@ -69,6 +69,21 @@
 				E6253CA42A9342F0003B8B1F /* Info.plist */,
 			);
 			path = WeatherApp;
+			sourceTree = "<group>";
+		};
+		E6253CAF2A93444D003B8B1F /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				E6253CB02A93445B003B8B1F /* HttpRequester.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		E6253CB22A9346C6003B8B1F /* Core */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -88,8 +103,6 @@
 			);
 			name = WeatherApp;
 			packageProductDependencies = (
-				E6253CAB2A9343C3003B8B1F /* SnapKit */,
-				E6253CAD2A9343C3003B8B1F /* SnapKit-Dynamic */,
 			);
 			productName = WeatherApp;
 			productReference = E6253C932A9342EF003B8B1F /* WeatherApp.app */;
@@ -120,7 +133,6 @@
 			);
 			mainGroup = E6253C8A2A9342EF003B8B1F;
 			packageReferences = (
-				E6253CAA2A9343C3003B8B1F /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = E6253C942A9342EF003B8B1F /* Products */;
 			projectDirPath = "";
@@ -151,6 +163,7 @@
 			files = (
 				E6253C9B2A9342EF003B8B1F /* MainViewController.swift in Sources */,
 				E6253C972A9342EF003B8B1F /* AppDelegate.swift in Sources */,
+				E6253CB12A93445B003B8B1F /* HttpRequester.swift in Sources */,
 				E6253C992A9342EF003B8B1F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,6 +307,7 @@
 		E6253CA82A9342F0003B8B1F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_HOST = api.weatherbit.io;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -322,6 +336,7 @@
 		E6253CA92A9342F0003B8B1F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_HOST = api.weatherbit.io;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -369,30 +384,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		E6253CAA2A9343C3003B8B1F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		E6253CAB2A9343C3003B8B1F /* SnapKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E6253CAA2A9343C3003B8B1F /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
-		};
-		E6253CAD2A9343C3003B8B1F /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E6253CAA2A9343C3003B8B1F /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E6253C8B2A9342EF003B8B1F /* Project object */;
 }
