@@ -9,18 +9,12 @@ import CoreLocation
 
 class MainViewController: UIViewController {
 
-    private var viewModel: WeatherViewmodel? = nil
-    private var currentUnit: Unit? = .celsius{
+    private var viewModel: WeatherViewmodel? {
         didSet{
-            if let currentLocation {
-                let lat = currentLocation.coordinate.latitude
-                let lon = currentLocation.coordinate.longitude
-                getWeatherData(lat: "\(lat)", lon: "\(lon)")
-                txtField.text = "\(lat) , \(lon)"
-                unitButton.setTitle(currentUnit?.name, for: .normal)
-            }
+            tableView.reloadData()
         }
     }
+    private var weatherLoader: WeatherLoader? = nil
     private var locationManager = CLLocationManager()
     private var currentLocation: CLLocation? {
         didSet{
@@ -29,6 +23,18 @@ class MainViewController: UIViewController {
                 let lon = currentLocation.coordinate.longitude
                 getWeatherData(lat: "\(lat)", lon: "\(lon)")
                 txtField.text = "\(lat) , \(lon)"
+            }
+        }
+    }
+    
+    private var currentUnit: Unit = .celsius {
+        didSet{
+            if let currentLocation {
+                let lat = currentLocation.coordinate.latitude
+                let lon = currentLocation.coordinate.longitude
+                getWeatherData(lat: "\(lat)", lon: "\(lon)")
+                txtField.text = "\(lat) , \(lon)"
+                unitButton.setTitle(currentUnit.name, for: .normal)
             }
         }
     }
@@ -90,7 +96,7 @@ class MainViewController: UIViewController {
         btn.backgroundColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 0.5)
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
-        btn.setTitle(currentUnit?.name, for: .normal)
+        btn.setTitle(currentUnit.name, for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(showActionSheet), for: .touchUpInside)
         return btn
@@ -169,34 +175,17 @@ class MainViewController: UIViewController {
     
     func getWeatherData(lat:String,lon:String){
         txtField.resignFirstResponder()
-        var params = [
-            URLQueryItem(name: "lat", value: lat),
-            URLQueryItem(name: "lon", value: lon),
-            URLQueryItem(name: "key", value: "03304d22b3f340ae8e6771599cc030bd"),
-            URLQueryItem(name: "units", value: currentUnit?.weatherBitUnit()),
-        ]
-        
-        HttpRequester().get(endPoint: "current", queryItems:params, remoteObject: CurrentWeatherResponse.self) { [weak self] response in
-            let mainData = response.data.first!
-            let items = [
-                BaseItem(title: "Weather", value: mainData.weather.description),
-                BaseItem(title: "Temp", value: "\(mainData.temp)"),
-                BaseItem(title: "AQI", value: "\(mainData.aqi)"),
-                BaseItem(title: "Wind speed", value: "\(mainData.windSpd)"),
-            ]
-            self?.viewModel = WeatherViewmodel(items: items)
-            self?.tableView.reloadData()
-            self?.hideLoader()
-            print(response)
+        self.showLoader()
+        weatherLoader?.getWeather(lat:lat, lon: lon, unit: currentUnit.weatherBitUnit()) { [weak self] viewmodel in
+            self?.viewModel = viewmodel
         } fail: { [weak self] errorMsg in
-            print(errorMsg)
             self?.hideLoader()
             self?.showAlert(message: errorMsg)
         }
     }
 }
 
-extension MainViewController: UITableViewDelegate , UITableViewDataSource{
+extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -204,18 +193,16 @@ extension MainViewController: UITableViewDelegate , UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel?.items.count ?? 0
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {    }
-    
+        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ListTableCell = tableView.dequeueReusableCell(withIdentifier: "ListTableCell") as! ListTableCell
         let item = viewModel?.items[indexPath.row]
         cell.lblSubtitle.text = item?.value
         cell.lblTitle.text = item?.title
         cell.thumbnail.image = UIImage(systemName: "cloud.sun.rain")
-
         return cell
     }
+    
     func showLoader() {
         addChild(spinner)
         spinner.view.frame = view.frame
@@ -315,4 +302,5 @@ extension Unit{
   - Enhacne user experience
   - Follow SOLID principles
   - Follow the composer pattern
+ x
  */

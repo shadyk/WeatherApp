@@ -20,6 +20,9 @@
 		E6253CBD2A939078003B8B1F /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CBC2A939078003B8B1F /* WeatherViewModel.swift */; };
 		E6253CBF2A9391A7003B8B1F /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CBE2A9391A7003B8B1F /* UIViewController+Alert.swift */; };
 		E6253CC42A939B9D003B8B1F /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CC32A939B9D003B8B1F /* SpinnerViewController.swift */; };
+		E6253CC62A93C5D9003B8B1F /* WeatherLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CC52A93C5D9003B8B1F /* WeatherLoader.swift */; };
+		E6253CC82A93C657003B8B1F /* RemoteWeatherLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CC72A93C657003B8B1F /* RemoteWeatherLoader.swift */; };
+		E6253CCA2A93CC6D003B8B1F /* UIViewController+Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CC92A93CC6D003B8B1F /* UIViewController+Loader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +40,9 @@
 		E6253CBC2A939078003B8B1F /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		E6253CBE2A9391A7003B8B1F /* UIViewController+Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		E6253CC32A939B9D003B8B1F /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
+		E6253CC52A93C5D9003B8B1F /* WeatherLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherLoader.swift; sourceTree = "<group>"; };
+		E6253CC72A93C657003B8B1F /* RemoteWeatherLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteWeatherLoader.swift; sourceTree = "<group>"; };
+		E6253CC92A93CC6D003B8B1F /* UIViewController+Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Loader.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +94,7 @@
 			children = (
 				E6253CB02A93445B003B8B1F /* HttpRequester.swift */,
 				E6253CBA2A939057003B8B1F /* CurrentWeatherResponse.swift */,
+				E6253CC72A93C657003B8B1F /* RemoteWeatherLoader.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -95,6 +102,7 @@
 		E6253CB22A9346C6003B8B1F /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				E6253CC52A93C5D9003B8B1F /* WeatherLoader.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -115,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				E6253CBE2A9391A7003B8B1F /* UIViewController+Alert.swift */,
+				E6253CC92A93CC6D003B8B1F /* UIViewController+Loader.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -199,10 +208,13 @@
 				E6253C9B2A9342EF003B8B1F /* MainViewController.swift in Sources */,
 				E6253C972A9342EF003B8B1F /* AppDelegate.swift in Sources */,
 				E6253CB12A93445B003B8B1F /* HttpRequester.swift in Sources */,
+				E6253CCA2A93CC6D003B8B1F /* UIViewController+Loader.swift in Sources */,
 				E6253CBD2A939078003B8B1F /* WeatherViewModel.swift in Sources */,
 				E6253CB72A935BD3003B8B1F /* ListTableCell.swift in Sources */,
 				E6253C992A9342EF003B8B1F /* SceneDelegate.swift in Sources */,
 				E6253CBB2A939057003B8B1F /* CurrentWeatherResponse.swift in Sources */,
+				E6253CC82A93C657003B8B1F /* RemoteWeatherLoader.swift in Sources */,
+				E6253CC62A93C5D9003B8B1F /* WeatherLoader.swift in Sources */,
 				E6253CC42A939B9D003B8B1F /* SpinnerViewController.swift in Sources */,
 				E6253CBF2A9391A7003B8B1F /* UIViewController+Alert.swift in Sources */,
 			);
