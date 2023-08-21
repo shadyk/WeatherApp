@@ -7,6 +7,9 @@ import UIKit
 import SnapKit
 class MainViewController: UIViewController {
 
+    
+    private var viewModel: WeatherViewmodel? = nil
+    
     private lazy var tableView: UITableView = {
         let t = UITableView(frame: .zero, style: .grouped)
         t.backgroundColor = .white
@@ -23,7 +26,6 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupInterface()
-//        getWeatherData()
     }
     
     private lazy var txtField: UITextField = {
@@ -91,11 +93,28 @@ class MainViewController: UIViewController {
             URLQueryItem(name: "lon", value: lon),
             URLQueryItem(name: "key", value: "03304d22b3f340ae8e6771599cc030bd")
         ]
-        HttpRequester().get(endPoint: "current", queryItems:params, remoteObject: CurrentWeatherResponse.self) { response in
+        HttpRequester().get(endPoint: "current", queryItems:params, remoteObject: CurrentWeatherResponse.self) { [weak self] response in
+            let mainData = response.data.first!
+            let items = [
+                BaseItem(title: "Weather", value: mainData.weather.description),
+                BaseItem(title: "Temp", value: "\(mainData.temp)"),
+                BaseItem(title: "AQI", value: "\(mainData.aqi)"),
+                BaseItem(title: "Wind speed", value: "\(mainData.windSpd)"),
+            ]
+            self?.viewModel = WeatherViewmodel(items: items)
+            self?.tableView.reloadData()
             print(response)
         } fail: { errorMsg in
             print(errorMsg)
         }
+    }
+    
+    struct WeatherViewmodel{
+        let items: [BaseItem]
+    }
+    struct BaseItem{
+        var title:String
+        var value:String
     }
 }
 
@@ -171,16 +190,16 @@ extension MainViewController: UITableViewDelegate , UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        viewModel?.items.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell: ListTableCell = tableView.dequeueReusableCell(withIdentifier: "ListTableCell") as! ListTableCell
-        cell.lblSubtitle.text = "sub"
-        cell.lblTitle.text = "title"
+        let item = viewModel?.items[indexPath.row]
+        cell.lblSubtitle.text = item?.value
+        cell.lblTitle.text = item?.title
         cell.thumbnail.image = UIImage(systemName: "cloud.sun.rain")
 
         return cell
