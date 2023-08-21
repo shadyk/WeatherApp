@@ -13,30 +13,30 @@ struct CurrentWeatherResponse: Codable {
 // MARK: - Datum
 struct MainData: Codable {
     let appTemp: Double
-    let aqi: Int
+    let aqi: Double
     let cityName: String
-    let clouds: Int
+    let clouds: Double
     let countryCode, datetime: String
     let dewpt, dhi, dni, elevAngle: Double
     let ghi, gust: Double
-    let hAngle: Int
+    let hAngle: Double
     let lat, lon: Double
     let obTime, pod: String
-    let precip: Int
+    let precip: Double
     let pres: Double
-    let rh: Int
+    let rh: Double
     let slp: Double
     let snow, solarRAD: Float
     let sources: [String]
     let stateCode, station, sunrise, sunset: String
     let temp: Double
     let timezone: String
-    let ts: Int
+    let ts: Double
     let uv: Double
-    let vis: Int
+    let vis: Double
     let weather: Weather
     let windCdir, windCdirFull: String
-    let windDir: Int
+    let windDir: Double
     let windSpd: Double
     
     enum CodingKeys: String, CodingKey {

@@ -19,6 +19,7 @@
 		E6253CBB2A939057003B8B1F /* CurrentWeatherResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CBA2A939057003B8B1F /* CurrentWeatherResponse.swift */; };
 		E6253CBD2A939078003B8B1F /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CBC2A939078003B8B1F /* WeatherViewModel.swift */; };
 		E6253CBF2A9391A7003B8B1F /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CBE2A9391A7003B8B1F /* UIViewController+Alert.swift */; };
+		E6253CC42A939B9D003B8B1F /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CC32A939B9D003B8B1F /* SpinnerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		E6253CBA2A939057003B8B1F /* CurrentWeatherResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherResponse.swift; sourceTree = "<group>"; };
 		E6253CBC2A939078003B8B1F /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		E6253CBE2A9391A7003B8B1F /* UIViewController+Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
+		E6253CC32A939B9D003B8B1F /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				E6253C9A2A9342EF003B8B1F /* MainViewController.swift */,
 				E6253CB62A935BD2003B8B1F /* ListTableCell.swift */,
 				E6253CBC2A939078003B8B1F /* WeatherViewModel.swift */,
+				E6253CC32A939B9D003B8B1F /* SpinnerViewController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 				E6253CB72A935BD3003B8B1F /* ListTableCell.swift in Sources */,
 				E6253C992A9342EF003B8B1F /* SceneDelegate.swift in Sources */,
 				E6253CBB2A939057003B8B1F /* CurrentWeatherResponse.swift in Sources */,
+				E6253CC42A939B9D003B8B1F /* SpinnerViewController.swift in Sources */,
 				E6253CBF2A9391A7003B8B1F /* UIViewController+Alert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

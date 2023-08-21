@@ -18,16 +18,7 @@ class MainViewController: UIViewController {
         t.showsVerticalScrollIndicator = false
         t.delegate = self
         t.dataSource = self
-        t.refreshControl = refreshControl
         return t
-    }()
-    
-    lazy var refreshControl: UIRefreshControl? = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action:
-            #selector(self.handlePullToRefresh(_:)), for: UIControl.Event.valueChanged)
-        refreshControl.tintColor = UIColor.gray
-        return refreshControl
     }()
     
     private lazy var txtField: UITextField = {
@@ -57,6 +48,17 @@ class MainViewController: UIViewController {
         return btn
     }()
     
+    private lazy var locationButton: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 0.5)
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.white, for: .normal)
+        btn.setTitle("Weather for current location", for: .normal)
+        btn.layer.cornerRadius = 8
+        btn.addTarget(self, action: #selector(getCurrentLocation), for: .touchUpInside)
+        return btn
+    }()
+    
     private lazy var tableHeader: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
         view.backgroundColor = .clear
@@ -78,6 +80,20 @@ class MainViewController: UIViewController {
     }()
     
     
+    private lazy var tableFooter: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
+        view.backgroundColor = .clear
+        view.addSubview(locationButton)
+        locationButton.snp.makeConstraints { make in
+            make.center.equalTo(view)
+            make.height.equalTo(50)
+            make.width.equalTo(200)
+
+        }
+        return view
+    }()
+    private lazy var spinner = SpinnerViewController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupInterface()
@@ -90,15 +106,19 @@ class MainViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         tableView.tableHeaderView = tableHeader
+        tableView.tableFooterView = tableFooter
     }
-    
-    @objc func handlePullToRefresh(_ refreshControl: UIRefreshControl) {
-        searchAction()
-    }
+
     
     
     @objc private func searchAction(){
-        refreshControl?.beginRefreshing()
+        showLoader()
+        let s = self.txtField.text?.components(separatedBy: ",")
+        getWeatherData(lat: s?.first ?? "33.3", lon: s?.last ?? "33.3")
+    }
+    
+    @objc private func getCurrentLocation(){
+        showLoader()
         let s = self.txtField.text?.components(separatedBy: ",")
         getWeatherData(lat: s?.first ?? "33.3", lon: s?.last ?? "33.3")
     }
@@ -119,10 +139,11 @@ class MainViewController: UIViewController {
             ]
             self?.viewModel = WeatherViewmodel(items: items)
             self?.tableView.reloadData()
-            self?.refreshControl?.endRefreshing()
+            self?.hideLoader()
             print(response)
-        } fail: { errorMsg in
-            self.showAlert(message: errorMsg)
+        } fail: { [weak self] errorMsg in
+            self?.hideLoader()
+            self?.showAlert(message: errorMsg)
         }
     }
 }
@@ -147,5 +168,16 @@ extension MainViewController: UITableViewDelegate , UITableViewDataSource{
 
         return cell
     }
+    func showLoader() {
+        addChild(spinner)
+        spinner.view.frame = view.frame
+        view.addSubview(spinner.view)
+        spinner.didMove(toParent: self)
+    }
     
+    func hideLoader(){
+        spinner.willMove(toParent: nil)
+        spinner.view.removeFromSuperview()
+        spinner.removeFromParent()
+    }
 }
