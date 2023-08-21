@@ -137,6 +137,7 @@ class MainViewController: UIViewController {
     }
     
     func getWeatherData(lat:String,lon:String){
+        txtField.resignFirstResponder()
         let params = [
             URLQueryItem(name: "lat", value: lat),
             URLQueryItem(name: "lon", value: lon),
