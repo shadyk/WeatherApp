@@ -10,6 +10,17 @@ import CoreLocation
 class MainViewController: UIViewController {
 
     private var viewModel: WeatherViewmodel? = nil
+    private var currentUnit: Unit? = .celsius{
+        didSet{
+            if let currentLocation {
+                let lat = currentLocation.coordinate.latitude
+                let lon = currentLocation.coordinate.longitude
+                getWeatherData(lat: "\(lat)", lon: "\(lon)")
+                txtField.text = "\(lat) , \(lon)"
+                unitButton.setTitle(currentUnit?.name, for: .normal)
+            }
+        }
+    }
     private var locationManager = CLLocationManager()
     private var currentLocation: CLLocation? {
         didSet{
@@ -68,9 +79,20 @@ class MainViewController: UIViewController {
         btn.backgroundColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 0.5)
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
-        btn.setTitle("Weather for current location", for: .normal)
+        btn.setTitle("Current location", for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(getCurrentLocation), for: .touchUpInside)
+        return btn
+    }()
+    
+    private lazy var unitButton: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 0.5)
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.white, for: .normal)
+        btn.setTitle(currentUnit?.name, for: .normal)
+        btn.layer.cornerRadius = 8
+        btn.addTarget(self, action: #selector(showActionSheet), for: .touchUpInside)
         return btn
     }()
     
@@ -99,12 +121,21 @@ class MainViewController: UIViewController {
     private lazy var tableFooter: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
         view.backgroundColor = .clear
-        view.addSubview(locationButton)
+        let hStack = UIStackView(arrangedSubviews: [locationButton,unitButton])
+        
         locationButton.snp.makeConstraints { make in
-            make.center.equalTo(view)
             make.height.equalTo(50)
-            make.width.equalTo(200)
-
+        }
+        unitButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+        }
+        hStack.spacing = 10
+        hStack.distribution = .fillEqually
+        hStack.alignment = .center
+        hStack.axis = .horizontal
+        view.addSubview(hStack)
+        hStack.snp.makeConstraints { make in
+            make.edges.equalTo(view).inset(UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
         }
         return view
     }()
@@ -138,11 +169,13 @@ class MainViewController: UIViewController {
     
     func getWeatherData(lat:String,lon:String){
         txtField.resignFirstResponder()
-        let params = [
+        var params = [
             URLQueryItem(name: "lat", value: lat),
             URLQueryItem(name: "lon", value: lon),
-            URLQueryItem(name: "key", value: "03304d22b3f340ae8e6771599cc030bd")
+            URLQueryItem(name: "key", value: "03304d22b3f340ae8e6771599cc030bd"),
+            URLQueryItem(name: "units", value: currentUnit?.weatherBitUnit()),
         ]
+        
         HttpRequester().get(endPoint: "current", queryItems:params, remoteObject: CurrentWeatherResponse.self) { [weak self] response in
             let mainData = response.data.first!
             let items = [
@@ -197,13 +230,29 @@ extension MainViewController: UITableViewDelegate , UITableViewDataSource{
     }
 }
 
+extension MainViewController{
+    @objc func showActionSheet(){
+        guard currentLocation != nil else {return}
+        let actionSheet = UIAlertController(title: "Choose a unit", message: nil, preferredStyle: .actionSheet)
+        Unit.allCases.forEach{ unit in
+            let action = UIAlertAction(title: unit.name, style: .default) { [weak self] _ in
+                self?.currentUnit = unit.self
+            }
+            actionSheet.addAction(action)
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
+        actionSheet.addAction(cancel)
+        present(actionSheet, animated: true, completion: nil)
+    }
+}
+
 extension MainViewController: CLLocationManagerDelegate{
     private func initalizeLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-//        locationManager.startMonitoringSignificantLocationChanges()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -224,10 +273,36 @@ extension MainViewController: CLLocationManagerDelegate{
             fatalError()
         }
     }
+    
+    
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         locationManager.stopUpdatingLocation()
         hideLoader()
         showAlert(message: "Couldn't get location : \(error.localizedDescription)")
+    }
+}
+
+
+enum Unit: String, CaseIterable{
+    case celsius
+    case kelvin
+    case fahrenheit
+    
+    var name: String{
+        self.rawValue.capitalized
+    }
+}
+
+extension Unit{
+    func weatherBitUnit() -> String{
+        switch self{
+        case .celsius:
+            return "M"
+        case .kelvin:
+            return "S"
+        case .fahrenheit:
+            return "I"
+        }
     }
 }
