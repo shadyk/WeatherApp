@@ -23,5 +23,9 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We would like to access your location to show you weather</string>
+	<key>NSLocationUsageDescription</key>
+	<string>We would like to access your location to show you weather</string>
 </dict>
 </plist>

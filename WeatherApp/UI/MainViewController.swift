@@ -5,9 +5,22 @@
 
 import UIKit
 import SnapKit
+import CoreLocation
+
 class MainViewController: UIViewController {
 
     private var viewModel: WeatherViewmodel? = nil
+    private var locationManager = CLLocationManager()
+    private var currentLocation: CLLocation? {
+        didSet{
+            if let currentLocation {
+                let lat = currentLocation.coordinate.latitude
+                let lon = currentLocation.coordinate.longitude
+                getWeatherData(lat: "\(lat)", lon: "\(lon)")
+                txtField.text = "\(lat) , \(lon)"
+            }
+        }
+    }
     
     private lazy var tableView: UITableView = {
         let t = UITableView(frame: .zero, style: .grouped)
@@ -28,9 +41,11 @@ class MainViewController: UIViewController {
         tf.backgroundColor = .white
         tf.layer.cornerRadius = 8
         tf.font = UIFont.systemFont(ofSize: 14)
+        tf.textColor = .gray
         tf.textAlignment = .left
-        tf.keyboardType = .numberPad
+        tf.keyboardType =  .numbersAndPunctuation
         tf.placeholder = "Enter lat, lon"
+
         let paddingView = UIView(frame: CGRectMake(0, 0, 12, tf.frame.height))
         tf.leftView = paddingView
         tf.leftViewMode = .always
@@ -67,15 +82,16 @@ class MainViewController: UIViewController {
         txtField.snp.makeConstraints { make in
             make.centerY.equalTo(view)
             make.height.equalTo(50)
-            make.left.equalTo(view).offset(12)
-            make.right.equalTo(searchButton.snp.left).offset(-12)
+            make.leading.equalTo(view).offset(12)
+            make.trailing.equalTo(searchButton.snp.leading).offset(-12)
         }
         searchButton.snp.makeConstraints { make in
             make.centerY.equalTo(view)
             make.width.equalTo(100)
             make.height.equalTo(50)
-            make.right.equalTo(view).offset(-12)
+            make.trailing.equalTo(view).offset(-12)
         }
+        searchButton.contentCompressionResistancePriority(for: .horizontal)
         return view
     }()
     
@@ -108,8 +124,6 @@ class MainViewController: UIViewController {
         tableView.tableHeaderView = tableHeader
         tableView.tableFooterView = tableFooter
     }
-
-    
     
     @objc private func searchAction(){
         showLoader()
@@ -119,8 +133,7 @@ class MainViewController: UIViewController {
     
     @objc private func getCurrentLocation(){
         showLoader()
-        let s = self.txtField.text?.components(separatedBy: ",")
-        getWeatherData(lat: s?.first ?? "33.3", lon: s?.last ?? "33.3")
+        initalizeLocationManager()
     }
     
     func getWeatherData(lat:String,lon:String){
@@ -142,6 +155,7 @@ class MainViewController: UIViewController {
             self?.hideLoader()
             print(response)
         } fail: { [weak self] errorMsg in
+            print(errorMsg)
             self?.hideLoader()
             self?.showAlert(message: errorMsg)
         }
@@ -179,5 +193,40 @@ extension MainViewController: UITableViewDelegate , UITableViewDataSource{
         spinner.willMove(toParent: nil)
         spinner.view.removeFromSuperview()
         spinner.removeFromParent()
+    }
+}
+
+extension MainViewController: CLLocationManagerDelegate{
+    private func initalizeLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+//        locationManager.startMonitoringSignificantLocationChanges()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location: CLLocation = locations.last!
+        currentLocation = location
+        locationManager.stopUpdatingLocation()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .restricted, .denied:
+           print("denied")
+        case .notDetermined:
+            print("notDetermined")
+        case .authorizedAlways, .authorizedWhenInUse:
+            print("authorized")
+        @unknown default:
+            fatalError()
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        locationManager.stopUpdatingLocation()
+        hideLoader()
+        showAlert(message: "Couldn't get location : \(error.localizedDescription)")
     }
 }

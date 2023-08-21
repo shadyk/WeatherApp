@@ -18,7 +18,7 @@ struct MainData: Codable {
     let clouds: Double
     let countryCode, datetime: String
     let dewpt, dhi, dni, elevAngle: Double
-    let ghi, gust: Double
+    let ghi, gust: Double?
     let hAngle: Double
     let lat, lon: Double
     let obTime, pod: String
