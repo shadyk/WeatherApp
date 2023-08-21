@@ -40,14 +40,17 @@ class MainViewController: UIViewController {
         tf.textAlignment = .left
         tf.keyboardType = .numberPad
         tf.placeholder = "Enter lat, lon"
+        let paddingView = UIView(frame: CGRectMake(0, 0, 12, tf.frame.height))
+        tf.leftView = paddingView
+        tf.leftViewMode = .always
         return tf
     }()
     
     private lazy var searchButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .brown
+        btn.backgroundColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 0.5)
         btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.blue, for: .normal)
+        btn.setTitleColor(.white, for: .normal)
         btn.setTitle("Search", for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(searchAction), for: .touchUpInside)
@@ -56,7 +59,7 @@ class MainViewController: UIViewController {
     
     private lazy var tableHeader: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
-        view.backgroundColor = .red
+        view.backgroundColor = .clear
         view.addSubview(txtField)
         view.addSubview(searchButton)
         txtField.snp.makeConstraints { make in
