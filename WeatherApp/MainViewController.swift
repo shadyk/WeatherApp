@@ -4,12 +4,34 @@
 //  
 
 import UIKit
-
+import SnapKit
 class MainViewController: UIViewController {
+
+    private lazy var tableView: UITableView = {
+        let t = UITableView(frame: .zero, style: .grouped)
+        t.backgroundColor = .white
+        t.rowHeight = UITableView.automaticDimension
+        t.estimatedRowHeight = 1
+        t.separatorStyle = .none
+        t.showsVerticalScrollIndicator = false
+        t.delegate = self
+        t.dataSource = self
+        return t
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getWeatherData()
+        setupInterface()
+//        getWeatherData()
+    }
+    
+    private func setupInterface(){
+        view.addSubview(tableView)
+        title = "Today's weather"
+        tableView.register(ListTableCell.self, forCellReuseIdentifier: "ListTableCell")
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     func getWeatherData(){
@@ -23,9 +45,7 @@ class MainViewController: UIViewController {
         } fail: { errorMsg in
             print(errorMsg)
         }
-
     }
-    
 }
 
 struct CurrentWeatherResponse: Codable {
@@ -49,7 +69,7 @@ struct MainData: Codable {
     let pres: Double
     let rh: Int
     let slp: Double
-    let snow, solarRAD: Double
+    let snow, solarRAD: Float
     let sources: [String]
     let stateCode, station, sunrise, sunset: String
     let temp: Double
@@ -90,4 +110,27 @@ struct MainData: Codable {
 struct Weather: Codable {
     let code: Int
     let icon, description: String
+}
+
+
+
+extension MainViewController: UITableViewDelegate , UITableViewDataSource{
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        3
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell: ListTableCell = tableView.dequeueReusableCell(withIdentifier: "ListTableCell") as! ListTableCell
+        cell.lblSubtitle.text = "epis"
+        cell.lblTitle.text = "name"
+        return cell
+    }
+    
 }
