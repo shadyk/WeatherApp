@@ -119,7 +119,7 @@ class MainViewController: UIViewController {
             self?.refreshControl?.endRefreshing()
             print(response)
         } fail: { errorMsg in
-            print(errorMsg)
+            self.showAlert(message: errorMsg)
         }
     }
 }
