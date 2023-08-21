@@ -7,7 +7,6 @@ import UIKit
 import SnapKit
 class MainViewController: UIViewController {
 
-    
     private var viewModel: WeatherViewmodel? = nil
     
     private lazy var tableView: UITableView = {
@@ -19,14 +18,17 @@ class MainViewController: UIViewController {
         t.showsVerticalScrollIndicator = false
         t.delegate = self
         t.dataSource = self
+        t.refreshControl = refreshControl
         return t
     }()
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupInterface()
-    }
+    lazy var refreshControl: UIRefreshControl? = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(self.handlePullToRefresh(_:)), for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.gray
+        return refreshControl
+    }()
     
     private lazy var txtField: UITextField = {
         let tf = UITextField()
@@ -73,6 +75,11 @@ class MainViewController: UIViewController {
     }()
     
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupInterface()
+    }
+    
     private func setupInterface(){
         view.addSubview(tableView)
         tableView.register(ListTableCell.self, forCellReuseIdentifier: "ListTableCell")
@@ -82,7 +89,13 @@ class MainViewController: UIViewController {
         tableView.tableHeaderView = tableHeader
     }
     
+    @objc func handlePullToRefresh(_ refreshControl: UIRefreshControl) {
+        searchAction()
+    }
+    
+    
     @objc private func searchAction(){
+        refreshControl?.beginRefreshing()
         let s = self.txtField.text?.components(separatedBy: ",")
         getWeatherData(lat: s?.first ?? "33.3", lon: s?.last ?? "33.3")
     }
@@ -103,6 +116,7 @@ class MainViewController: UIViewController {
             ]
             self?.viewModel = WeatherViewmodel(items: items)
             self?.tableView.reloadData()
+            self?.refreshControl?.endRefreshing()
             print(response)
         } fail: { errorMsg in
             print(errorMsg)
@@ -181,8 +195,6 @@ struct Weather: Codable {
     let code: Int
     let icon, description: String
 }
-
-
 
 extension MainViewController: UITableViewDelegate , UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
