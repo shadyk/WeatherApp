@@ -19,21 +19,72 @@ class MainViewController: UIViewController {
         return t
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupInterface()
 //        getWeatherData()
     }
     
+    private lazy var txtField: UITextField = {
+        let tf = UITextField()
+        tf.layer.borderWidth = 1
+        tf.layer.borderColor = UIColor.gray.cgColor
+        tf.backgroundColor = .white
+        tf.layer.cornerRadius = 8
+        tf.font = UIFont.systemFont(ofSize: 14)
+        tf.textAlignment = .left
+        tf.keyboardType = .numberPad
+        tf.placeholder = "Enter lat, lon"
+        return tf
+    }()
+    
+    private lazy var searchButton: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .brown
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.blue, for: .normal)
+        btn.setTitle("Search", for: .normal)
+        btn.layer.cornerRadius = 8
+        btn.addTarget(self, action: #selector(searchAction), for: .touchUpInside)
+        return btn
+    }()
+    
+    private lazy var tableHeader: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
+        view.backgroundColor = .red
+        view.addSubview(txtField)
+        view.addSubview(searchButton)
+        txtField.snp.makeConstraints { make in
+            make.centerY.equalTo(view)
+            make.height.equalTo(50)
+            make.left.equalTo(view).offset(12)
+            make.right.equalTo(searchButton.snp.left).offset(-12)
+        }
+        searchButton.snp.makeConstraints { make in
+            make.centerY.equalTo(view)
+            make.width.equalTo(100)
+            make.height.equalTo(50)
+            make.right.equalTo(view).offset(-12)
+        }
+        return view
+    }()
+    
+    
     private func setupInterface(){
         view.addSubview(tableView)
         title = "Today's weather"
+        
         tableView.register(ListTableCell.self, forCellReuseIdentifier: "ListTableCell")
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        tableView.tableHeaderView = tableHeader
     }
     
+    @objc private func searchAction(){
+        
+    }
     func getWeatherData(){
         let params = [
             URLQueryItem(name: "lat", value: "33.33"),
@@ -128,8 +179,8 @@ extension MainViewController: UITableViewDelegate , UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell: ListTableCell = tableView.dequeueReusableCell(withIdentifier: "ListTableCell") as! ListTableCell
-        cell.lblSubtitle.text = "epis"
-        cell.lblTitle.text = "name"
+        cell.lblSubtitle.text = "sub"
+        cell.lblTitle.text = "title"
         return cell
     }
     
