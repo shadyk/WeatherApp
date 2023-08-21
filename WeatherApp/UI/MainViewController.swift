@@ -306,3 +306,13 @@ extension Unit{
         }
     }
 }
+
+/*
+ Review the code you have written for Tasks 1-3 and identify any areas where improvements can be made in terms of code efficiency, modularity, or best practices. Provide a written explanation of your findings, along with any suggested improvements.
+ 
+  - Seperate concerns of UI, app logic, and services
+  - Modularize services for reusablity
+  - Enhacne user experience
+  - Follow SOLID principles
+  - Follow the composer pattern
+ */
