@@ -73,8 +73,6 @@ class MainViewController: UIViewController {
     
     private func setupInterface(){
         view.addSubview(tableView)
-        title = "Today's weather"
-        
         tableView.register(ListTableCell.self, forCellReuseIdentifier: "ListTableCell")
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -83,12 +81,14 @@ class MainViewController: UIViewController {
     }
     
     @objc private func searchAction(){
-        
+        let s = self.txtField.text?.components(separatedBy: ",")
+        getWeatherData(lat: s?.first ?? "33.3", lon: s?.last ?? "33.3")
     }
-    func getWeatherData(){
+    
+    func getWeatherData(lat:String,lon:String){
         let params = [
-            URLQueryItem(name: "lat", value: "33.33"),
-            URLQueryItem(name: "lon", value: "33.33"),
+            URLQueryItem(name: "lat", value: lat),
+            URLQueryItem(name: "lon", value: lon),
             URLQueryItem(name: "key", value: "03304d22b3f340ae8e6771599cc030bd")
         ]
         HttpRequester().get(endPoint: "current", queryItems:params, remoteObject: CurrentWeatherResponse.self) { response in
@@ -181,6 +181,8 @@ extension MainViewController: UITableViewDelegate , UITableViewDataSource{
         let cell: ListTableCell = tableView.dequeueReusableCell(withIdentifier: "ListTableCell") as! ListTableCell
         cell.lblSubtitle.text = "sub"
         cell.lblTitle.text = "title"
+        cell.thumbnail.image = UIImage(systemName: "cloud.sun.rain")
+
         return cell
     }
     

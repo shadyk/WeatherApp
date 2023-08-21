@@ -7,7 +7,7 @@ import UIKit
 
 class ListTableCell: UITableViewCell {
     
-    private var thumbnail: UIImageView = {
+    var thumbnail: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         return iv
