@@ -11,7 +11,7 @@ enum Unit: String, CaseIterable{
     case fahrenheit
     
     var name: String{
-        self.rawValue.capitalized
+        self.rawValue.localized.capitalized
     }
 }
 

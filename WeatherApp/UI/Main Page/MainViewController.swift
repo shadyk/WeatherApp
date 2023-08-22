@@ -49,7 +49,7 @@ class MainViewController: UIViewController, LoadingViewController {
     
     private lazy var tableView: UITableView = {
         let t = UITableView(frame: .zero, style: .grouped)
-        t.backgroundColor = .white
+        t.backgroundColor = ThemeManager.currentTheme.backgroundColor
         t.rowHeight = UITableView.automaticDimension
         t.estimatedRowHeight = 1
         t.separatorStyle = .none
@@ -63,13 +63,13 @@ class MainViewController: UIViewController, LoadingViewController {
         let tf = UITextField()
         tf.layer.borderWidth = 1
         tf.layer.borderColor = UIColor.gray.cgColor
-        tf.backgroundColor = .white
+        tf.backgroundColor = ThemeManager.currentTheme.backgroundColor
         tf.layer.cornerRadius = 8
         tf.font = UIFont.systemFont(ofSize: 14)
         tf.textColor = .gray
         tf.textAlignment = .left
         tf.keyboardType =  .numbersAndPunctuation
-        tf.placeholder = "Enter lat, lon"
+        tf.placeholder = "placeholder".localized
         let paddingView = UIView(frame: CGRectMake(0, 0, 12, tf.frame.height))
         tf.leftView = paddingView
         tf.leftViewMode = .always
@@ -80,11 +80,10 @@ class MainViewController: UIViewController, LoadingViewController {
         let btn = UIButton()
         btn.backgroundColor = .enabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.white, for: .normal)
         btn.setTitle("search".localized, for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(searchAction), for: .touchUpInside)
-        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(ThemeManager.currentTheme.textColor, for: .normal)
         btn.setTitleColor(.gray, for: .disabled)
         return btn
     }()
@@ -93,9 +92,9 @@ class MainViewController: UIViewController, LoadingViewController {
         let btn = UIButton()
         btn.backgroundColor = .enabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(ThemeManager.currentTheme.textColor, for: .normal)
         btn.setTitleColor(.gray, for: .disabled)
-        btn.setTitle("Current location", for: .normal)
+        btn.setTitle("current_location".localized, for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(getCurrentLocation), for: .touchUpInside)
         return btn
@@ -105,7 +104,7 @@ class MainViewController: UIViewController, LoadingViewController {
         let btn = UIButton()
         btn.backgroundColor = .enabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(ThemeManager.currentTheme.textColor, for: .normal)
         btn.setTitleColor(.gray, for: .disabled)
         btn.setTitle(LanguageManager.theOtherLanguageName(), for: .normal)
         btn.layer.cornerRadius = 8
@@ -116,9 +115,9 @@ class MainViewController: UIViewController, LoadingViewController {
         let btn = UIButton()
         btn.backgroundColor = .enabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(ThemeManager.currentTheme.textColor, for: .normal)
         btn.setTitleColor(.gray, for: .disabled)
-        btn.setTitle("Dark", for: .normal)
+        btn.setTitle("theme".localized, for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(darkPressed), for: .touchUpInside)
         return btn
@@ -128,11 +127,10 @@ class MainViewController: UIViewController, LoadingViewController {
         let btn = UIButton()
         btn.backgroundColor = .enabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.white, for: .normal)
         btn.setTitle(currentUnit.name, for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(showActionSheet), for: .touchUpInside)
-        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(ThemeManager.currentTheme.textColor, for: .normal)
         btn.setTitleColor(.gray, for: .disabled)
         btn.isEnabled = false
         return btn
@@ -218,7 +216,7 @@ class MainViewController: UIViewController, LoadingViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = ThemeManager.currentTheme.backgroundColor
     }
     
     convenience init(controller: WeatherListController){
@@ -334,9 +332,11 @@ extension MainViewController{
         let actionSheet = UIAlertController(title: "Choose Language", message: nil, preferredStyle: .actionSheet)
         
         let arAction = UIAlertAction(title: "Arabic", style: .default) { [weak self] _ in
+            guard !LanguageManager.currentLangauageIsArabic() else {return }
             self?.setupLanguageChanged()
         }
         let enAction = UIAlertAction(title: "English", style: .default) { [weak self] _ in
+            guard LanguageManager.currentLangauageIsArabic() else {return }
             self?.setupLanguageChanged()
         }
         
@@ -349,28 +349,40 @@ extension MainViewController{
     
     private func setupLanguageChanged() {
         let language = LanguageManager.currentLanguageIsRTL() ? Language.english : Language.arabic
-        LanguageManager.setCurrentLanguage(languageId: language.languageId)        
-        let scene = UIApplication.shared.connectedScenes.first
-        if let sd : SceneDelegate = (scene?.delegate as? SceneDelegate) {
-            sd.setupIntitalPage()
-        }
+        LanguageManager.setCurrentLanguage(languageId: language.languageId)
+        restartApp()
     }
     
     @objc func darkPressed(){
         let actionSheet = UIAlertController(title: "Choose Theme", message: nil, preferredStyle: .actionSheet)
         
-        let arAction = UIAlertAction(title: "Dark", style: .default) { [weak self] _ in
-//            self?.setupLanguageChanged()
+        let dark = UIAlertAction(title: "Dark", style: .default) { _ in
+            guard ThemeManager.currentTheme == .light else {return}
+            ThemeManager.currentTheme = .dark
+            self.restartApp()
+
+            
         }
-        let enAction = UIAlertAction(title: "Light", style: .default) { [weak self] _ in
-//            self?.setupLanguageChanged()
+        let light = UIAlertAction(title: "Light", style: .default) { _ in
+            guard ThemeManager.currentTheme == .dark else {return}
+
+            ThemeManager.currentTheme = .light
+            ThemeManager.applyTheme()
+            self.restartApp()
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
-        actionSheet.addAction(arAction)
-        actionSheet.addAction(enAction)
+        actionSheet.addAction(dark)
+        actionSheet.addAction(light)
         actionSheet.addAction(cancel)
         present(actionSheet, animated: true, completion: nil)
+    }
+    
+    private func restartApp(){
+        let scene = UIApplication.shared.connectedScenes.first
+        if let sd : SceneDelegate = (scene?.delegate as? SceneDelegate) {
+            sd.setupIntitalPage()
+        }
     }
 }
 

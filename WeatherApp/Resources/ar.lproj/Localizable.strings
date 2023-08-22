@@ -6,3 +6,9 @@
   
 */
 "search" = "ابحث";
+"celsius" = "سلسيوس";
+"kelvin" = "كالفين";
+"fahrenheit" = "فاهرنهايت";
+"current_location" = "موقعي";
+"theme" = "لوني";
+"placeholder" = "الطول، العرض";

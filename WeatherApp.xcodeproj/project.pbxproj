@@ -34,6 +34,7 @@
 		E6253CE22A94CC8E003B8B1F /* WeatherLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CE12A94CC8E003B8B1F /* WeatherLoaderWithFallbackComposite.swift */; };
 		E6253CE72A94DC5F003B8B1F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6253CE92A94DC5F003B8B1F /* Localizable.strings */; };
 		E6253CED2A94DD1A003B8B1F /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CEC2A94DD1A003B8B1F /* LanguageManager.swift */; };
+		E6253CEF2A94F17B003B8B1F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CEE2A94F17B003B8B1F /* Theme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		E6253CE82A94DC5F003B8B1F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E6253CEA2A94DC62003B8B1F /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E6253CEC2A94DD1A003B8B1F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
+		E6253CEE2A94F17B003B8B1F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				E6253CC32A939B9D003B8B1F /* SpinnerViewController.swift */,
+				E6253CEE2A94F17B003B8B1F /* Theme.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				E6253C9B2A9342EF003B8B1F /* MainViewController.swift in Sources */,
 				E6253CE22A94CC8E003B8B1F /* WeatherLoaderWithFallbackComposite.swift in Sources */,
 				E6253CD22A94699E003B8B1F /* Composer.swift in Sources */,
+				E6253CEF2A94F17B003B8B1F /* Theme.swift in Sources */,
 				E6253CCC2A946377003B8B1F /* ListCellController.swift in Sources */,
 				E6253C972A9342EF003B8B1F /* AppDelegate.swift in Sources */,
 				E6253CB12A93445B003B8B1F /* HttpRequester.swift in Sources */,
