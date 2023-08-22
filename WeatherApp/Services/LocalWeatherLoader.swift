@@ -30,7 +30,6 @@ class LocalWeatherCache: WeatherCache ,WeatherLoader{
                  fail("error getting cache")
                  print("Unable to Decode (\(error))")
              }
-            
         }
         else{
             fail("error getting cache")

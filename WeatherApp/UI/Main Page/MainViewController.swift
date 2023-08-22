@@ -422,12 +422,35 @@ extension MainViewController: CLLocationManagerDelegate{
 }
 
 /*
- Review the code you have written for Tasks 1-3 and identify any areas where improvements can be made in terms of code efficiency, modularity, or best practices. Provide a written explanation of your findings, along with any suggested improvements.
+ Review the code you have written for Tasks 1-3 and identify any areas where improvements can be made in terms of code efficiency, modularity, or best practices. Provide a written explanation of your findings, along with any suggested improvements:
  
  - Seperate concerns of UI, app logic, and services
  - Modularize services for reusablity
  - Enhacne user experience
  - Follow SOLID principles
  - Follow the composer pattern
+ 
+ TODO:
+ Task 6 is not implemented as required
+ 
+ 
+ Task 9: Accessibility Enhancements
+ Improve the accessibility of the application to accommodate users with disabilities. Implement VoiceOver support, ensuring that all UI elements are properly labeled and accessible through voice commands. Test the application using VoiceOver and make necessary adjustments for a seamless experience.
+  
+ Task 10: Performance Optimization
+ Review the application's performance and identify areas for optimization. Optimize the code, such as network requests or UI rendering, to reduce latency and improve responsiveness. Provide a written explanation of the performance improvements made and any relevant metrics or benchmarks.
+ 
+ -------------------------------------------------------------
+ My main purpose was to highlight the importance of separating concerns, modularization, reusability, maintainability, and scalability.
+
+ The starting point is the SceneDelegate -> setupIntitalPage where the main screen is composed with its dependency "List Controller"
+ 
+ Although, the app only has one API, I created App host in the info to handle different environment variables needed for later( Testing, Production)
+
+ Some of the Principles and patterns followed:
+ Composition Root, Factory, Delegation, Observable, MVC, Dependency Injection
+
+ Points To Enhance:
+ Write unit tests
  
  */

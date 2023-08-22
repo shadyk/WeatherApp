@@ -12,7 +12,6 @@ class WeatherLoaderWithFallbackComposite: WeatherLoader {
 	init(primary: WeatherLoader, fallback: WeatherLoader) {
 		self.primary = primary
 		self.fallback = fallback
-
 	}
     
     func getWeather(lat: String, lon: String, unit: String, success: @escaping LoadWeatherCompletion, fail: @escaping ErrorHandler) {
