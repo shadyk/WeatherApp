@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func setupIntitalPage() {
 
-        let remoteController = DefaultWeatherListController(weatherLoader: RemoteWeatherLoader())
+        let remoteController = DefaultWeatherListController(weatherLoader: RemoteWeatherLoader(),cache: LocalWeatherLoader())
         
         let root = Composer.mainViewController(controller: remoteController)
         
