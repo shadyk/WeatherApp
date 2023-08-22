@@ -14,11 +14,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+        setupLanguage()
         setupIntitalPage()
     }
     
-    func setupIntitalPage() {
-        
+    private func setupLanguage(){
+        let en = Language(languageId: "en", name: "English", isRTL: false)
+        let ar = Language(languageId: "ar", name: "Arabic", isRTL: true)
+        LanguageManager.initialize(languages: [en,ar], defaultLanguage: ar)
+    }
+    
+    private func setupIntitalPage() {
+
         let loader = WeatherLoaderWithFallbackComposite(primary: RemoteWeatherLoader(), fallback: LocalWeatherCache())
         
         let remoteController = DefaultWeatherListController(weatherLoader: loader)

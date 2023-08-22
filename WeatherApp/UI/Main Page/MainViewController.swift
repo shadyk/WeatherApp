@@ -83,7 +83,7 @@ class MainViewController: UIViewController, LoadingViewController {
         btn.backgroundColor = .disabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
-        btn.setTitle("Search", for: .normal)
+        btn.setTitle("search".localized, for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(searchAction), for: .touchUpInside)
         btn.setTitleColor(.white, for: .normal)
