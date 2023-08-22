@@ -23,7 +23,7 @@ class DefaultWeatherListController: WeatherListController{
             
             let cellControllers = [
                 ListCellController(viewModel: ViewItem(title: "Weather", value: viewModel.weatherDescription)),
-                ListCellController(viewModel: ViewItem(title: "Temp", value: viewModel.temp)),
+                ListCellController(viewModel: ViewItem(title: "Temp in \(unit.name)", value: viewModel.temp)),
                 ListCellController(viewModel: ViewItem(title: "AQI", value: viewModel.aqi)),
                 ListCellController(viewModel: ViewItem(title: "Wind speed", value: viewModel.windSpeed)),
             ]
