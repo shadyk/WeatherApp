@@ -16,5 +16,6 @@ struct WeatherViewModel{
     var temp :String
     var weatherDescription :String
     var windSpeed :String
+    var weatherStatus: WeatherStatus
     
 }

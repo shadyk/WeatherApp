@@ -10,6 +10,13 @@ import CoreLocation
 class MainViewController: UIViewController, LoadingViewController {
     
     private var controller: WeatherListController?
+    private var weatherStatus: WeatherStatus?{
+        didSet{
+            guard let weatherStatus else { return }
+            view.backgroundColor = weatherStatus.color
+            tableView.backgroundColor = weatherStatus.color
+        }
+    }
     private var tableModel = [ListCellController]() {
         didSet {
             tableView.reloadData()
@@ -188,8 +195,10 @@ class MainViewController: UIViewController, LoadingViewController {
         guard let coord else {return nil}
         let fields = coord.components(separatedBy: ",")
         guard fields.count == 2,
-                let lat = Double(fields.first!),
-                  let lon = Double(fields.last!)
+              let lat = Double(fields.first!.trimmingCharacters(in: .whitespacesAndNewlines)
+),
+              let lon = Double(fields.last!.trimmingCharacters(in: .whitespacesAndNewlines)
+)
         else {return nil}
         if CLLocationCoordinate2DIsValid(CLLocationCoordinate2D(latitude: lat, longitude: lon)){
             return (fields.first!, fields.last!)
@@ -205,9 +214,10 @@ class MainViewController: UIViewController, LoadingViewController {
     func getWeatherData(lat:String,lon:String){
         txtField.resignFirstResponder()
         self.showLoader()
-        controller?.loadWeather(lat:lat, lon: lon, unit: currentUnit, success: { [weak self] model in
+        controller?.loadWeather(lat:lat, lon: lon, unit: currentUnit, success: { [weak self] response in
             self?.hideLoader()
-            self?.tableModel = model
+            self?.tableModel = response.cellControllers
+            self?.weatherStatus = response.weatherStatus
         }, fail: { [weak self] msg in
             self?.hideLoader()
             self?.showAlert(message: msg)

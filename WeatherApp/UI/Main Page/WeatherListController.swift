@@ -8,7 +8,7 @@ import UIKit
 
 protocol WeatherListController {
     var weatherLoader: WeatherLoader { get set }
-    func loadWeather(lat:String, lon:String, unit: Unit, success: @escaping ([ListCellController]) -> Void,  fail: @escaping ErrorHandler)
+    func loadWeather(lat:String, lon:String, unit: Unit, success: @escaping (WeatherLoaderResponse) -> Void,  fail: @escaping ErrorHandler)
 }
 
 
@@ -18,7 +18,7 @@ class DefaultWeatherListController: WeatherListController{
         self.weatherLoader = weatherLoader
     }
     
-    func loadWeather(lat:String, lon:String, unit: Unit, success: @escaping ([ListCellController]) -> Void,  fail: @escaping ErrorHandler) {
+    func loadWeather(lat:String, lon:String, unit: Unit, success: @escaping (WeatherLoaderResponse) -> Void,  fail: @escaping ErrorHandler) {
         self.loadWeathersFromLoader(lat: lat, lon: lon, unit: unit.weatherBitUnit()) { viewModel in
             let cellControllers = [
                 ListCellController(viewModel: ViewItem(title: "Weather", value: viewModel.weatherDescription, systemImage: "cloud.sun.rain")),
@@ -26,7 +26,9 @@ class DefaultWeatherListController: WeatherListController{
                 ListCellController(viewModel: ViewItem(title: "AQI", value: viewModel.aqi, systemImage: "aqi.medium")),
                 ListCellController(viewModel: ViewItem(title: "Wind speed", value: viewModel.windSpeed, systemImage: "wind")),
             ]
-            success(cellControllers)
+            
+            let response = WeatherLoaderResponse(cellControllers: cellControllers, weatherStatus: viewModel.weatherStatus)
+            success(response)
         } fail: { fail($0) }
     }
     
@@ -35,4 +37,9 @@ class DefaultWeatherListController: WeatherListController{
                                  success: { success($0) },
                                  fail: {  fail($0)})
     }
+}
+
+struct WeatherLoaderResponse{
+    var cellControllers: [ListCellController]
+    var weatherStatus: WeatherStatus
 }
