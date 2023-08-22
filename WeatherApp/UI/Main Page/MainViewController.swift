@@ -236,7 +236,7 @@ class MainViewController: UIViewController, LoadingViewController {
             make.trailing.equalToSuperview()
         }
         tableFooter.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(24)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.height.equalTo(200)
