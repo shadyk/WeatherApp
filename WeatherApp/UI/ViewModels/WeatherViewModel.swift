@@ -6,8 +6,9 @@
 import Foundation
 
 struct ViewItem{
-    var title:String
-    var value:String
+    var title: String
+    var value: String
+    var systemImage: String
 }
 
 struct WeatherViewModel{

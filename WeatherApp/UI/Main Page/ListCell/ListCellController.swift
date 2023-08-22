@@ -17,7 +17,7 @@ final class ListCellController {
         cell = tableView.dequeueReusableCell()
         cell?.lblSubtitle.text = viewModel?.value
         cell?.lblTitle.text = viewModel?.title
-        cell?.thumbnail.image = UIImage(systemName: "cloud.sun.rain")
+        cell?.thumbnail.image = UIImage(systemName: viewModel?.systemImage ?? "sun.min")
         return cell!
     }
 

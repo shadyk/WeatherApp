@@ -46,7 +46,7 @@ class ListTableCell: UITableViewCell {
         
         thumbnail.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(12)
-            make.size.equalTo(80)
+            make.size.equalTo(40)
             make.centerY.equalToSuperview()
         }
         
