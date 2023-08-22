@@ -5,23 +5,35 @@
 
 import Foundation
 
-class LocalWeatherLoader: WeatherCache{
+class LocalWeatherCache: WeatherCache ,WeatherLoader{
     let key = "weather_key"
     func insert(_ weather: WeatherViewModel, completion: @escaping InsertionCompletion) {
-        UserDefaults.standard.set(weather, forKey: key)
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(weather)
+            UserDefaults.standard.set(data, forKey: key)
+
+        } catch {
+            print("Unable to Encode Note (\(error))")
+        }
         UserDefaults.standard.synchronize()
     }
     
-    func retrieve(completion: @escaping RetrievalCompletion) {
-        if let vm = UserDefaults.standard.object(forKey: key) as? WeatherViewModel{
-            completion(.success(vm))
+    func getWeather(lat: String, lon: String, unit: String, success: @escaping LoadWeatherCompletion, fail: @escaping ErrorHandler) {
+        if let data = UserDefaults.standard.data(forKey: key) {
+            do {
+                 let decoder = JSONDecoder()
+                 let item = try decoder.decode(WeatherViewModel.self, from: data)
+                success(item)
+
+             } catch {
+                 fail("error getting cache")
+                 print("Unable to Decode (\(error))")
+             }
+            
         }
         else{
-            completion(.failure(LocalError.unknown))
+            fail("error getting cache")
         }
     }
-}
-
-enum LocalError: Error{
-    case unknown
 }

@@ -31,6 +31,7 @@
 		E6253CDC2A94942B003B8B1F /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CDB2A94942B003B8B1F /* UIColor+Extensions.swift */; };
 		E6253CDE2A94C0F2003B8B1F /* LocalWeatherLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CDD2A94C0F2003B8B1F /* LocalWeatherLoader.swift */; };
 		E6253CE02A94C25E003B8B1F /* WeatherCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CDF2A94C25E003B8B1F /* WeatherCache.swift */; };
+		E6253CE22A94CC8E003B8B1F /* WeatherLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CE12A94CC8E003B8B1F /* WeatherLoaderWithFallbackComposite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		E6253CDB2A94942B003B8B1F /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		E6253CDD2A94C0F2003B8B1F /* LocalWeatherLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalWeatherLoader.swift; sourceTree = "<group>"; };
 		E6253CDF2A94C25E003B8B1F /* WeatherCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCache.swift; sourceTree = "<group>"; };
+		E6253CE12A94CC8E003B8B1F /* WeatherLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +194,7 @@
 		E6253CD82A946C4C003B8B1F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				E6253CE12A94CC8E003B8B1F /* WeatherLoaderWithFallbackComposite.swift */,
 				E6253CC52A93C5D9003B8B1F /* WeatherLoader.swift */,
 				E6253CDF2A94C25E003B8B1F /* WeatherCache.swift */,
 				E6253CC72A93C657003B8B1F /* RemoteWeatherLoader.swift */,
@@ -278,6 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6253C9B2A9342EF003B8B1F /* MainViewController.swift in Sources */,
+				E6253CE22A94CC8E003B8B1F /* WeatherLoaderWithFallbackComposite.swift in Sources */,
 				E6253CD22A94699E003B8B1F /* Composer.swift in Sources */,
 				E6253CCC2A946377003B8B1F /* ListCellController.swift in Sources */,
 				E6253C972A9342EF003B8B1F /* AppDelegate.swift in Sources */,

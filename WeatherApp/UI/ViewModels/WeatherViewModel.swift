@@ -11,7 +11,7 @@ struct ViewItem{
     var systemImage: String
 }
 
-struct WeatherViewModel{
+struct WeatherViewModel: Codable{
     var aqi :String
     var temp :String
     var weatherDescription :String

@@ -21,6 +21,7 @@ class MainViewController: UIViewController, LoadingViewController {
     }
     private var tableModel = [ListCellController]() {
         didSet {
+            
             tableView.reloadData()
             unitButton.isEnabled = true
         }
@@ -216,12 +217,17 @@ class MainViewController: UIViewController, LoadingViewController {
         txtField.resignFirstResponder()
         self.showLoader()
         controller?.loadWeather(lat:lat, lon: lon, unit: currentUnit, success: { [weak self] response in
-            self?.hideLoader()
-            self?.tableModel = response.cellControllers
-            self?.weatherStatus = response.weatherStatus
+            DispatchQueue.main.async {
+                self?.hideLoader()
+                self?.tableModel = response.cellControllers
+                self?.weatherStatus = response.weatherStatus
+            }
+           
         }, fail: { [weak self] msg in
-            self?.hideLoader()
-            self?.showAlert(message: msg)
+            DispatchQueue.main.async {
+                self?.hideLoader()
+                self?.showAlert(message: msg)
+            }
         })
     }
 }
@@ -329,8 +335,8 @@ extension LoadingViewController{
     }
     
     func hideLoader(){
-        spinner.willMove(toParent: nil)
-        spinner.view.removeFromSuperview()
-        spinner.removeFromParent()
+        self.spinner.willMove(toParent: nil)
+        self.spinner.view.removeFromSuperview()
+        self.spinner.removeFromParent()
     }
 }

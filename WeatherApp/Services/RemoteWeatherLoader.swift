@@ -43,7 +43,7 @@ class RemoteWeatherLoader: WeatherLoader {
     }
 }
 
-enum WeatherStatus: String{
+enum WeatherStatus: String, Codable{
     case sunny, rainy, cloudy
     
     var color: UIColor{
