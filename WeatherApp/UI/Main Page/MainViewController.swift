@@ -168,9 +168,26 @@ class MainViewController: UIViewController, LoadingViewController {
     }
     
     @objc private func searchAction(){
+        guard let coord = getCoordinates(self.txtField.text)
+        else {
+            showAlert(message: "Please enter correct lat,lon");
+            return;
+        }
         showLoader()
-        let s = self.txtField.text?.components(separatedBy: ",")
-        getWeatherData(lat: s?.first ?? "33.3", lon: s?.last ?? "33.3")
+        getWeatherData(lat: coord.0, lon: coord.1)
+    }
+    
+    private func getCoordinates(_ coord: String?) -> (String,String)?{
+        guard let coord else {return nil}
+        let fields = coord.components(separatedBy: ",")
+        guard fields.count == 2,
+                let lat = Double(fields.first!),
+                  let lon = Double(fields.last!)
+        else {return nil}
+        if CLLocationCoordinate2DIsValid(CLLocationCoordinate2D(latitude: lat, longitude: lon)){
+            return (fields.first!, fields.last!)
+        }
+        return nil
     }
     
     @objc private func getCurrentLocation(){
@@ -271,6 +288,7 @@ extension MainViewController: CLLocationManagerDelegate{
  - Follow the composer pattern
  x
  */
+
 protocol LoadingViewController: UIViewController{
     var spinner: SpinnerViewController { get }
     func showLoader()
