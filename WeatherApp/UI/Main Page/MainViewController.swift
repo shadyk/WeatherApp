@@ -7,7 +7,7 @@ import UIKit
 import SnapKit
 import CoreLocation
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, LoadingViewController {
     
     private var controller: WeatherListController?
     private var tableModel = [ListCellController]() {
@@ -61,7 +61,7 @@ class MainViewController: UIViewController {
         tf.textAlignment = .left
         tf.keyboardType =  .numbersAndPunctuation
         tf.placeholder = "Enter lat, lon"
-
+        
         let paddingView = UIView(frame: CGRectMake(0, 0, 12, tf.frame.height))
         tf.leftView = paddingView
         tf.leftViewMode = .always
@@ -144,7 +144,8 @@ class MainViewController: UIViewController {
         }
         return view
     }()
-    private lazy var spinner = SpinnerViewController()
+    
+    var spinner = SpinnerViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,7 +156,6 @@ class MainViewController: UIViewController {
         self.controller = controller
         setupInterface()
     }
-    
     
     private func setupInterface(){
         view.addSubview(tableView)
@@ -187,7 +187,7 @@ class MainViewController: UIViewController {
         }, fail: { [weak self] msg in
             self?.hideLoader()
             self?.showAlert(message: msg)
-        })        
+        })
     }
 }
 
@@ -199,7 +199,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableModel.count
     }
-        
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellController = cellController(forRowAt: indexPath)
         return cellController.view(in: tableView)
@@ -207,19 +207,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     
     private func cellController(forRowAt indexPath: IndexPath) -> ListCellController {
         return tableModel[indexPath.row]
-    }
-    
-    func showLoader() {
-        addChild(spinner)
-        spinner.view.frame = view.frame
-        view.addSubview(spinner.view)
-        spinner.didMove(toParent: self)
-    }
-    
-    func hideLoader(){
-        spinner.willMove(toParent: nil)
-        spinner.view.removeFromSuperview()
-        spinner.removeFromParent()
     }
 }
 
@@ -253,11 +240,11 @@ extension MainViewController: CLLocationManagerDelegate{
         currentLocation = location
         locationManager.stopUpdatingLocation()
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .restricted, .denied:
-           print("denied")
+            print("denied")
         case .notDetermined:
             print("notDetermined")
         case .authorizedAlways, .authorizedWhenInUse:
@@ -267,8 +254,6 @@ extension MainViewController: CLLocationManagerDelegate{
         }
     }
     
-    
-
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         locationManager.stopUpdatingLocation()
         hideLoader()
@@ -276,37 +261,33 @@ extension MainViewController: CLLocationManagerDelegate{
     }
 }
 
-
-enum Unit: String, CaseIterable{
-    case celsius
-    case kelvin
-    case fahrenheit
-    
-    var name: String{
-        self.rawValue.capitalized
-    }
-}
-
-extension Unit{
-    func weatherBitUnit() -> String{
-        switch self{
-        case .celsius:
-            return "M"
-        case .kelvin:
-            return "S"
-        case .fahrenheit:
-            return "I"
-        }
-    }
-}
-
 /*
  Review the code you have written for Tasks 1-3 and identify any areas where improvements can be made in terms of code efficiency, modularity, or best practices. Provide a written explanation of your findings, along with any suggested improvements.
  
-  - Seperate concerns of UI, app logic, and services
-  - Modularize services for reusablity
-  - Enhacne user experience
-  - Follow SOLID principles
-  - Follow the composer pattern
+ - Seperate concerns of UI, app logic, and services
+ - Modularize services for reusablity
+ - Enhacne user experience
+ - Follow SOLID principles
+ - Follow the composer pattern
  x
  */
+protocol LoadingViewController: UIViewController{
+    var spinner: SpinnerViewController { get }
+    func showLoader()
+    func hideLoader()
+}
+
+extension LoadingViewController{
+    func showLoader() {
+        addChild(spinner)
+        spinner.view.frame = view.frame
+        view.addSubview(spinner.view)
+        spinner.didMove(toParent: self)
+    }
+    
+    func hideLoader(){
+        spinner.willMove(toParent: nil)
+        spinner.view.removeFromSuperview()
+        spinner.removeFromParent()
+    }
+}

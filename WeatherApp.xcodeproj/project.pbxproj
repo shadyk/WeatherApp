@@ -27,6 +27,7 @@
 		E6253CCE2A94641B003B8B1F /* UITableView+Dequeueing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CCD2A94641B003B8B1F /* UITableView+Dequeueing.swift */; };
 		E6253CD02A946565003B8B1F /* WeatherListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CCF2A946565003B8B1F /* WeatherListController.swift */; };
 		E6253CD22A94699E003B8B1F /* Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CD12A94699E003B8B1F /* Composer.swift */; };
+		E6253CDA2A949089003B8B1F /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CD92A949089003B8B1F /* Unit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		E6253CCD2A94641B003B8B1F /* UITableView+Dequeueing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Dequeueing.swift"; sourceTree = "<group>"; };
 		E6253CCF2A946565003B8B1F /* WeatherListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherListController.swift; sourceTree = "<group>"; };
 		E6253CD12A94699E003B8B1F /* Composer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Composer.swift; sourceTree = "<group>"; };
+		E6253CD92A949089003B8B1F /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				E6253CBC2A939078003B8B1F /* WeatherViewModel.swift */,
+				E6253CD92A949089003B8B1F /* Unit.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				E6253CD02A946565003B8B1F /* WeatherListController.swift in Sources */,
 				E6253CC82A93C657003B8B1F /* RemoteWeatherLoader.swift in Sources */,
 				E6253CC62A93C5D9003B8B1F /* WeatherLoader.swift in Sources */,
+				E6253CDA2A949089003B8B1F /* Unit.swift in Sources */,
 				E6253CCE2A94641B003B8B1F /* UITableView+Dequeueing.swift in Sources */,
 				E6253CC42A939B9D003B8B1F /* SpinnerViewController.swift in Sources */,
 				E6253CBF2A9391A7003B8B1F /* UIViewController+Alert.swift in Sources */,
