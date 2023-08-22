@@ -18,7 +18,7 @@ class RemoteWeatherLoader: WeatherLoader {
             URLQueryItem(name: "units", value: unit),
         ]
         
-        HttpRequester().get(endPoint: endpoint, queryItems: params, remoteObject: CurrentWeatherResponse.self) { response in
+        HttpRequester().get(endPoint: endpoint, queryItems: params, remoteObject: RemoteWeather.self) { response in
             let mainData = response.data.first!
             let items = [
                 WeatherViewmodel(title: "Weather", value: mainData.weather.description),

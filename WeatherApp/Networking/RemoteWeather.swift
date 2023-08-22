@@ -5,7 +5,7 @@
 
 import Foundation
 
-struct CurrentWeatherResponse: Codable {
+struct RemoteWeather: Codable {
     let count: Int
     let data: [MainData]
 }
