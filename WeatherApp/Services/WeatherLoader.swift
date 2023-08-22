@@ -4,7 +4,7 @@
 //  
 
 import Foundation
-typealias LoadWeatherCompletion = ([WeatherViewmodel]) -> Void
+typealias LoadWeatherCompletion = (WeatherViewModel) -> Void
 
 protocol WeatherLoader{
     func getWeather(lat:String, lon:String, unit:String, success: @escaping LoadWeatherCompletion, fail: @escaping ErrorHandler)

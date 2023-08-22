@@ -7,9 +7,9 @@ import UIKit
 final class ListCellController {
     
     private var cell: ListTableCell?
-    var viewModel: WeatherViewmodel?
+    var viewModel: ViewItem?
     
-    init(viewModel: WeatherViewmodel? = nil) {
+    init(viewModel: ViewItem? = nil) {
         self.viewModel = viewModel
     }
 

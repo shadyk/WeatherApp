@@ -5,7 +5,15 @@
 
 import Foundation
 
-struct WeatherViewmodel{
+struct ViewItem{
     var title:String
     var value:String
+}
+
+struct WeatherViewModel{
+    var aqi :String
+    var temp :String
+    var weatherDescription :String
+    var windSpeed :String
+    
 }

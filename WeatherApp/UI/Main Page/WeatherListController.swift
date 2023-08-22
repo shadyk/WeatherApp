@@ -19,17 +19,21 @@ class DefaultWeatherListController: WeatherListController{
     }
     
     func loadWeather(lat:String, lon:String, unit: Unit, success: @escaping ([ListCellController]) -> Void,  fail: @escaping ErrorHandler) {
-        self.loadWeathersFromLoader(lat: lat, lon: lon, unit: unit.weatherBitUnit()) {
-            let cellControllers = $0.map {
-                ListCellController(viewModel: $0)
-            }
+        self.loadWeathersFromLoader(lat: lat, lon: lon, unit: unit.weatherBitUnit()) { viewModel in
+            
+            let cellControllers = [
+                ListCellController(viewModel: ViewItem(title: "Weather", value: viewModel.weatherDescription)),
+                ListCellController(viewModel: ViewItem(title: "Temp", value: viewModel.temp)),
+                ListCellController(viewModel: ViewItem(title: "AQI", value: viewModel.aqi)),
+                ListCellController(viewModel: ViewItem(title: "Wind speed", value: viewModel.windSpeed)),
+            ]
             success(cellControllers)
         } fail: { fail($0) }
     }
     
     private func loadWeathersFromLoader(lat:String, lon:String, unit: String, success: @escaping LoadWeatherCompletion,  fail: @escaping ErrorHandler) {
         weatherLoader.getWeather(lat: lat, lon: lon, unit: unit,
-            success: { success($0) },
-            fail: {  fail($0)})
+                                 success: { success($0) },
+                                 fail: {  fail($0)})
     }
 }

@@ -20,13 +20,9 @@ class RemoteWeatherLoader: WeatherLoader {
         
         HttpRequester().get(endPoint: endpoint, queryItems: params, remoteObject: RemoteWeather.self) { response in
             let mainData = response.data.first!
-            let items = [
-                WeatherViewmodel(title: "Weather", value: mainData.weather.description),
-                WeatherViewmodel(title: "Temp", value: "\(mainData.temp)"),
-                WeatherViewmodel(title: "AQI", value: "\(mainData.aqi)"),
-                WeatherViewmodel(title: "Wind speed", value: "\(mainData.windSpd)"),
-            ]
-            success(items)
+            
+            let viewModel = WeatherViewModel(aqi: "\(mainData.aqi)", temp: "\(mainData.temp)", weatherDescription: mainData.weather.description, windSpeed: "\(mainData.windSpd)")
+            success(viewModel)
         } fail: { fail($0) }
     }
 }
