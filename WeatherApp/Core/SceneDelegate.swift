@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         LanguageManager.initialize(languages: [en,ar], defaultLanguage: ar)
     }
     
-    private func setupIntitalPage() {
+    func setupIntitalPage() {
 
         let loader = WeatherLoaderWithFallbackComposite(primary: RemoteWeatherLoader(), fallback: LocalWeatherCache())
         

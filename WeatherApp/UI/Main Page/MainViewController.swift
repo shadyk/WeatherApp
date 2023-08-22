@@ -70,7 +70,6 @@ class MainViewController: UIViewController, LoadingViewController {
         tf.textAlignment = .left
         tf.keyboardType =  .numbersAndPunctuation
         tf.placeholder = "Enter lat, lon"
-//        tf.delegate = self
         let paddingView = UIView(frame: CGRectMake(0, 0, 12, tf.frame.height))
         tf.leftView = paddingView
         tf.leftViewMode = .always
@@ -296,13 +295,6 @@ class MainViewController: UIViewController, LoadingViewController {
     }
 }
 
-//extension MainViewController: UITextFieldDelegate{
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        searchButton.isEnabled = !string.isEmpty
-//        return true
-//    }
-//}
-
 extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -357,7 +349,11 @@ extension MainViewController{
     
     private func setupLanguageChanged() {
         let language = LanguageManager.currentLanguageIsRTL() ? Language.english : Language.arabic
-        LanguageManager.setCurrentLanguage(languageId: language.languageId)
+        LanguageManager.setCurrentLanguage(languageId: language.languageId)        
+        let scene = UIApplication.shared.connectedScenes.first
+        if let sd : SceneDelegate = (scene?.delegate as? SceneDelegate) {
+            sd.setupIntitalPage()
+        }
     }
     
     @objc func darkPressed(){
@@ -376,8 +372,6 @@ extension MainViewController{
         actionSheet.addAction(cancel)
         present(actionSheet, animated: true, completion: nil)
     }
-    
-
 }
 
 
