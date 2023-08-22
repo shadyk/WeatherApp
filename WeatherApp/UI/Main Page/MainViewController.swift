@@ -21,7 +21,6 @@ class MainViewController: UIViewController, LoadingViewController {
     }
     private var tableModel = [ListCellController]() {
         didSet {
-            
             tableView.reloadData()
             unitButton.isEnabled = true
         }
@@ -80,7 +79,7 @@ class MainViewController: UIViewController, LoadingViewController {
     
     private lazy var searchButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .disabledBlue
+        btn.backgroundColor = .enabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
         btn.setTitle("search".localized, for: .normal)
@@ -93,7 +92,7 @@ class MainViewController: UIViewController, LoadingViewController {
     
     private lazy var locationButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .disabledBlue
+        btn.backgroundColor = .enabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
         btn.setTitleColor(.gray, for: .disabled)
@@ -103,9 +102,32 @@ class MainViewController: UIViewController, LoadingViewController {
         return btn
     }()
     
+    private lazy var languageButton: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .enabledBlue
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(.gray, for: .disabled)
+        btn.setTitle(LanguageManager.theOtherLanguageName(), for: .normal)
+        btn.layer.cornerRadius = 8
+        btn.addTarget(self, action: #selector(languagePressed), for: .touchUpInside)
+        return btn
+    }()
+    private lazy var themeButton: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .enabledBlue
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(.gray, for: .disabled)
+        btn.setTitle("Dark", for: .normal)
+        btn.layer.cornerRadius = 8
+        btn.addTarget(self, action: #selector(darkPressed), for: .touchUpInside)
+        return btn
+    }()
+    
     private lazy var unitButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .disabledBlue
+        btn.backgroundColor = .enabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
         btn.setTitle(currentUnit.name, for: .normal)
@@ -138,10 +160,30 @@ class MainViewController: UIViewController, LoadingViewController {
         return view
     }()
     
-    
     private lazy var tableFooter: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
+        let view = UIView()
         view.backgroundColor = .clear
+        let firstHstack = footerFirstHstack()
+        let secondHstack = footerSecondHstack()
+        let stack = UIStackView(arrangedSubviews: [firstHstack, secondHstack])
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.distribution = .fillEqually
+        view.addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(12)
+        }
+        firstHstack.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        secondHstack.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        return view
+    }()
+    private func footerFirstHstack() -> UIStackView{
         let hStack = UIStackView(arrangedSubviews: [locationButton,unitButton])
         
         locationButton.snp.makeConstraints { make in
@@ -150,21 +192,34 @@ class MainViewController: UIViewController, LoadingViewController {
         unitButton.snp.makeConstraints { make in
             make.height.equalTo(50)
         }
-        hStack.spacing = 10
         hStack.distribution = .fillEqually
         hStack.alignment = .center
+        hStack.spacing = 12
         hStack.axis = .horizontal
-        view.addSubview(hStack)
-        hStack.snp.makeConstraints { make in
-            make.edges.equalTo(view).inset(UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
+        return hStack
+    }
+    
+    private func footerSecondHstack()-> UIStackView{
+        let hStack = UIStackView(arrangedSubviews: [languageButton,themeButton])
+        
+        languageButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
         }
-        return view
-    }()
+        themeButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+        }
+        hStack.distribution = .fillEqually
+        hStack.spacing = 12
+        hStack.alignment = .center
+        hStack.axis = .horizontal
+        return hStack
+    }
     
     var spinner = SpinnerViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
     }
     
     convenience init(controller: WeatherListController){
@@ -175,12 +230,21 @@ class MainViewController: UIViewController, LoadingViewController {
     
     private func setupInterface(){
         view.addSubview(tableView)
+        view.addSubview(tableFooter)
         tableView.register(ListTableCell.self, forCellReuseIdentifier: "ListTableCell")
-        tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
         tableView.tableHeaderView = tableHeader
-        tableView.tableFooterView = tableFooter
+        tableView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        tableFooter.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(200)
+            make.top.equalTo(tableView.snp.bottom)
+        }
     }
     
     @objc private func searchAction(){
@@ -273,7 +337,49 @@ extension MainViewController{
         actionSheet.addAction(cancel)
         present(actionSheet, animated: true, completion: nil)
     }
+    
+    @objc func languagePressed(){
+        let actionSheet = UIAlertController(title: "Choose Language", message: nil, preferredStyle: .actionSheet)
+        
+        let arAction = UIAlertAction(title: "Arabic", style: .default) { [weak self] _ in
+            self?.setupLanguageChanged()
+        }
+        let enAction = UIAlertAction(title: "English", style: .default) { [weak self] _ in
+            self?.setupLanguageChanged()
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
+        actionSheet.addAction(arAction)
+        actionSheet.addAction(enAction)
+        actionSheet.addAction(cancel)
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    private func setupLanguageChanged() {
+        let language = LanguageManager.currentLanguageIsRTL() ? Language.english : Language.arabic
+        LanguageManager.setCurrentLanguage(languageId: language.languageId)
+    }
+    
+    @objc func darkPressed(){
+        let actionSheet = UIAlertController(title: "Choose Theme", message: nil, preferredStyle: .actionSheet)
+        
+        let arAction = UIAlertAction(title: "Dark", style: .default) { [weak self] _ in
+//            self?.setupLanguageChanged()
+        }
+        let enAction = UIAlertAction(title: "Light", style: .default) { [weak self] _ in
+//            self?.setupLanguageChanged()
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
+        actionSheet.addAction(arAction)
+        actionSheet.addAction(enAction)
+        actionSheet.addAction(cancel)
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+
 }
+
 
 extension MainViewController: CLLocationManagerDelegate{
     private func initalizeLocationManager() {

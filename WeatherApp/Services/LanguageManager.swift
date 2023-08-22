@@ -42,6 +42,12 @@ class LanguageManager: NSObject {
         }
     }
 
+	static func currentLanuageName() -> String {
+		if shared.cLanguage.name.lowercased() == Language.english.name.lowercased() {
+            return languageName(for: "en")!
+		}
+		return languageName(for: "ar")!
+	}
 
     static func currentLanguageId() -> String {
         return shared.cLanguage.languageId
@@ -68,6 +74,9 @@ class LanguageManager: NSObject {
         return localizedString
     }
     
+	static func theOtherLanguageName() -> String {
+		return shared.cLanguage.isRTL ? languageName(for: "en")! : languageName(for: "ar")!
+	}
     static func currentLanguageIsRTL() -> Bool {
         return shared.cLanguage.isRTL
     }
