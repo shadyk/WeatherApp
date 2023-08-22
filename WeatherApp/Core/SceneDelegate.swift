@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let root = Composer.mainViewController(controller: remoteController)
         
-        setRootViewControllerForWindow(UINavigationController(rootViewController: root))
+        setRootViewControllerForWindow(root)
     }
     
     private func setRootViewControllerForWindow(_ vc: UIViewController) {
