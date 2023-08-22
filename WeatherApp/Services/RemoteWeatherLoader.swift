@@ -8,7 +8,7 @@ import Foundation
 class RemoteWeatherLoader: WeatherLoader {
     let api  = "03304d22b3f340ae8e6771599cc030bd"
  
-    func getWeather(lat:String, lon:String, unit:String, success: @escaping CurrentWeatherCompletion, fail: @escaping ErrorHandler) {
+    func getWeather(lat:String, lon:String, unit:String, success: @escaping LoadWeatherCompletion, fail: @escaping ErrorHandler) {
         
         let endpoint = "current"
         let params = [

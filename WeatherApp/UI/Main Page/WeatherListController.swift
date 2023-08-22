@@ -27,7 +27,7 @@ class DefaultWeatherListController: WeatherListController{
         } fail: { fail($0) }
     }
     
-    private func loadWeathersFromLoader(lat:String, lon:String, unit: String, success: @escaping CurrentWeatherCompletion,  fail: @escaping ErrorHandler) {
+    private func loadWeathersFromLoader(lat:String, lon:String, unit: String, success: @escaping LoadWeatherCompletion,  fail: @escaping ErrorHandler) {
         weatherLoader.getWeather(lat: lat, lon: lon, unit: unit,
             success: { success($0) },
             fail: {  fail($0)})
