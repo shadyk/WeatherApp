@@ -56,4 +56,15 @@ enum WeatherStatus: String{
             return .lightGray
         }
     }
+    
+    var image: String{
+        switch self{
+        case .sunny:
+            return "sun.max"
+        case .rainy:
+            return "cloud.rain"
+        case .cloudy:
+            return "cloud"
+        }
+    }
 }

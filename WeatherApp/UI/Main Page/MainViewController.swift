@@ -13,8 +13,10 @@ class MainViewController: UIViewController, LoadingViewController {
     private var weatherStatus: WeatherStatus?{
         didSet{
             guard let weatherStatus else { return }
-            view.backgroundColor = weatherStatus.color
-            tableView.backgroundColor = weatherStatus.color
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.3) {
+                self.view.backgroundColor = weatherStatus.color
+                self.tableView.backgroundColor = weatherStatus.color
+            }
         }
     }
     private var tableModel = [ListCellController]() {
@@ -68,7 +70,7 @@ class MainViewController: UIViewController, LoadingViewController {
         tf.textAlignment = .left
         tf.keyboardType =  .numbersAndPunctuation
         tf.placeholder = "Enter lat, lon"
-        tf.delegate = self
+//        tf.delegate = self
         let paddingView = UIView(frame: CGRectMake(0, 0, 12, tf.frame.height))
         tf.leftView = paddingView
         tf.leftViewMode = .always
@@ -85,7 +87,6 @@ class MainViewController: UIViewController, LoadingViewController {
         btn.addTarget(self, action: #selector(searchAction), for: .touchUpInside)
         btn.setTitleColor(.white, for: .normal)
         btn.setTitleColor(.gray, for: .disabled)
-        btn.isEnabled = false
         return btn
     }()
     
@@ -225,12 +226,12 @@ class MainViewController: UIViewController, LoadingViewController {
     }
 }
 
-extension MainViewController: UITextFieldDelegate{
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        searchButton.isEnabled = !string.isEmpty
-        return true
-    }
-}
+//extension MainViewController: UITextFieldDelegate{
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        searchButton.isEnabled = !string.isEmpty
+//        return true
+//    }
+//}
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {

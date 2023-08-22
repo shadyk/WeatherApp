@@ -21,7 +21,7 @@ class DefaultWeatherListController: WeatherListController{
     func loadWeather(lat:String, lon:String, unit: Unit, success: @escaping (WeatherLoaderResponse) -> Void,  fail: @escaping ErrorHandler) {
         self.loadWeathersFromLoader(lat: lat, lon: lon, unit: unit.weatherBitUnit()) { viewModel in
             let cellControllers = [
-                ListCellController(viewModel: ViewItem(title: "Weather", value: viewModel.weatherDescription, systemImage: "cloud.sun.rain")),
+                ListCellController(viewModel: ViewItem(title: "Weather", value: viewModel.weatherDescription, systemImage: viewModel.weatherStatus.image)),
                 ListCellController(viewModel: ViewItem(title: "Temp in \(unit.rawValue)", value: viewModel.temp, systemImage: "thermometer.medium")),
                 ListCellController(viewModel: ViewItem(title: "AQI", value: viewModel.aqi, systemImage: "aqi.medium")),
                 ListCellController(viewModel: ViewItem(title: "Wind speed", value: viewModel.windSpeed, systemImage: "wind")),
