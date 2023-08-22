@@ -20,10 +20,7 @@ class HttpRequester {
     private let PROTOCOL = "https"
     private let DOMAIN = "v2.0"
     private let HOST = Bundle.main.infoDictionary!["APP_HOST"] as! String
-//    private var MAIN_URL: String {
-//        return PROTOCOL + "://" + HOST + "/" +  DOMAIN + "/"
-//    }
-//
+
     func get<T: Decodable>(endPoint: String, queryItems: [URLQueryItem]? = nil, remoteObject: T.Type, success: @escaping RemoteCompeltion<T>, fail: @escaping ErrorHandler) {
         var components = URLComponents()
         components.scheme = PROTOCOL

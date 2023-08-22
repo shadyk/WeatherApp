@@ -8,13 +8,12 @@ import SnapKit
 import CoreLocation
 
 class MainViewController: UIViewController {
-
-    private var viewModel: WeatherViewmodel? {
-        didSet{
-            tableView.reloadData()
-        }
+    
+    private var controller: WeatherListController?
+    private var tableModel = [ListCellController]() {
+        didSet { tableView.reloadData() }
     }
-    private var weatherLoader: WeatherLoader? = nil
+    
     private var locationManager = CLLocationManager()
     private var currentLocation: CLLocation? {
         didSet{
@@ -149,8 +148,14 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    convenience init(controller: WeatherListController){
+        self.init()
+        self.controller = controller
         setupInterface()
     }
+    
     
     private func setupInterface(){
         view.addSubview(tableView)
@@ -176,12 +181,13 @@ class MainViewController: UIViewController {
     func getWeatherData(lat:String,lon:String){
         txtField.resignFirstResponder()
         self.showLoader()
-        weatherLoader?.getWeather(lat:lat, lon: lon, unit: currentUnit.weatherBitUnit()) { [weak self] viewmodel in
-            self?.viewModel = viewmodel
-        } fail: { [weak self] errorMsg in
+        controller?.loadWeather(lat:lat, lon: lon, unit: currentUnit, success: { [weak self] model in
             self?.hideLoader()
-            self?.showAlert(message: errorMsg)
-        }
+            self?.tableModel = model
+        }, fail: { [weak self] msg in
+            self?.hideLoader()
+            self?.showAlert(message: msg)
+        })        
     }
 }
 
@@ -191,16 +197,16 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel?.items.count ?? 0
+        return tableModel.count
     }
         
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: ListTableCell = tableView.dequeueReusableCell(withIdentifier: "ListTableCell") as! ListTableCell
-        let item = viewModel?.items[indexPath.row]
-        cell.lblSubtitle.text = item?.value
-        cell.lblTitle.text = item?.title
-        cell.thumbnail.image = UIImage(systemName: "cloud.sun.rain")
-        return cell
+        let cellController = cellController(forRowAt: indexPath)
+        return cellController.view(in: tableView)
+    }
+    
+    private func cellController(forRowAt indexPath: IndexPath) -> ListCellController {
+        return tableModel[indexPath.row]
     }
     
     func showLoader() {

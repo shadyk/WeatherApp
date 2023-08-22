@@ -11,23 +11,22 @@ class RemoteWeatherLoader: WeatherLoader {
     func getWeather(lat:String, lon:String, unit:String, success: @escaping CurrentWeatherCompletion, fail: @escaping ErrorHandler) {
         
         let endpoint = "current"
-        var params = [
+        let params = [
             URLQueryItem(name: "key", value: api ),
             URLQueryItem(name: "lat", value: lat),
             URLQueryItem(name: "lon", value: lon),
             URLQueryItem(name: "units", value: unit),
         ]
         
-        HttpRequester().get(endPoint: endpoint, remoteObject: CurrentWeatherResponse.self) { response in
+        HttpRequester().get(endPoint: endpoint, queryItems: params, remoteObject: CurrentWeatherResponse.self) { response in
             let mainData = response.data.first!
             let items = [
-                BaseItem(title: "Weather", value: mainData.weather.description),
-                BaseItem(title: "Temp", value: "\(mainData.temp)"),
-                BaseItem(title: "AQI", value: "\(mainData.aqi)"),
-                BaseItem(title: "Wind speed", value: "\(mainData.windSpd)"),
+                WeatherViewmodel(title: "Weather", value: mainData.weather.description),
+                WeatherViewmodel(title: "Temp", value: "\(mainData.temp)"),
+                WeatherViewmodel(title: "AQI", value: "\(mainData.aqi)"),
+                WeatherViewmodel(title: "Wind speed", value: "\(mainData.windSpd)"),
             ]
-             let viewModel = WeatherViewmodel(items: items)
-            success(viewModel)
+            success(items)
         } fail: { fail($0) }
     }
 }
