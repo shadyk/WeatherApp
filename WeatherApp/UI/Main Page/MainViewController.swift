@@ -259,9 +259,9 @@ class MainViewController: UIViewController, LoadingViewController {
         let fields = coord.components(separatedBy: ",")
         guard fields.count == 2,
               let lat = Double(fields.first!.trimmingCharacters(in: .whitespacesAndNewlines)
-),
+              ),
               let lon = Double(fields.last!.trimmingCharacters(in: .whitespacesAndNewlines)
-)
+              )
         else {return nil}
         if CLLocationCoordinate2DIsValid(CLLocationCoordinate2D(latitude: lat, longitude: lon)){
             return (fields.first!, fields.last!)
@@ -283,7 +283,7 @@ class MainViewController: UIViewController, LoadingViewController {
                 self?.tableModel = response.cellControllers
                 self?.weatherStatus = response.weatherStatus
             }
-           
+            
         }, fail: { [weak self] msg in
             DispatchQueue.main.async {
                 self?.hideLoader()
@@ -360,12 +360,12 @@ extension MainViewController{
             guard ThemeManager.currentTheme == .light else {return}
             ThemeManager.currentTheme = .dark
             self.restartApp()
-
+            
             
         }
         let light = UIAlertAction(title: "Light", style: .default) { _ in
             guard ThemeManager.currentTheme == .dark else {return}
-
+            
             ThemeManager.currentTheme = .light
             ThemeManager.applyTheme()
             self.restartApp()
@@ -429,26 +429,5 @@ extension MainViewController: CLLocationManagerDelegate{
  - Enhacne user experience
  - Follow SOLID principles
  - Follow the composer pattern
- x
+ 
  */
-
-protocol LoadingViewController: UIViewController{
-    var spinner: SpinnerViewController { get }
-    func showLoader()
-    func hideLoader()
-}
-
-extension LoadingViewController{
-    func showLoader() {
-        addChild(spinner)
-        spinner.view.frame = view.frame
-        view.addSubview(spinner.view)
-        spinner.didMove(toParent: self)
-    }
-    
-    func hideLoader(){
-        self.spinner.willMove(toParent: nil)
-        self.spinner.view.removeFromSuperview()
-        self.spinner.removeFromParent()
-    }
-}
