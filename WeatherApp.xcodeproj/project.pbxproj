@@ -35,6 +35,7 @@
 		E6253CE72A94DC5F003B8B1F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6253CE92A94DC5F003B8B1F /* Localizable.strings */; };
 		E6253CED2A94DD1A003B8B1F /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CEC2A94DD1A003B8B1F /* LanguageManager.swift */; };
 		E6253CEF2A94F17B003B8B1F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CEE2A94F17B003B8B1F /* Theme.swift */; };
+		E6253CF12A950372003B8B1F /* diagram.png in Resources */ = {isa = PBXBuildFile; fileRef = E6253CF02A950371003B8B1F /* diagram.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		E6253CEA2A94DC62003B8B1F /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E6253CEC2A94DD1A003B8B1F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		E6253CEE2A94F17B003B8B1F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		E6253CF02A950371003B8B1F /* diagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diagram.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 		E6253CD32A946BC9003B8B1F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E6253CF02A950371003B8B1F /* diagram.png */,
 				E6253C9C2A9342EF003B8B1F /* Main.storyboard */,
 				E6253C9F2A9342F0003B8B1F /* Assets.xcassets */,
 				E6253CA12A9342F0003B8B1F /* LaunchScreen.storyboard */,
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6253CA32A9342F0003B8B1F /* LaunchScreen.storyboard in Resources */,
+				E6253CF12A950372003B8B1F /* diagram.png in Resources */,
 				E6253CE72A94DC5F003B8B1F /* Localizable.strings in Resources */,
 				E6253CA02A9342F0003B8B1F /* Assets.xcassets in Resources */,
 				E6253C9E2A9342EF003B8B1F /* Main.storyboard in Resources */,

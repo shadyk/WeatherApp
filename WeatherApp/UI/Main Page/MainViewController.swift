@@ -445,7 +445,7 @@ extension MainViewController: CLLocationManagerDelegate{
 
  The starting point is the SceneDelegate -> setupIntitalPage where the main screen is composed with its dependency "List Controller"
  
- Although, the app only has one API, I created App host in the info to handle different environment variables needed for later( Testing, Production)
+ Although, the app only has one API, I created App host in the info to handle different environment variables needed for later.( Testing, Production)
 
  Some of the Principles and patterns followed:
  Composition Root, Factory, Delegation, Observable, MVC, Dependency Injection
