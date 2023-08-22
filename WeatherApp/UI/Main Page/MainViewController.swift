@@ -11,7 +11,10 @@ class MainViewController: UIViewController, LoadingViewController {
     
     private var controller: WeatherListController?
     private var tableModel = [ListCellController]() {
-        didSet { tableView.reloadData() }
+        didSet {
+            tableView.reloadData()
+            unitButton.isEnabled = true
+        }
     }
     
     private var locationManager = CLLocationManager()
@@ -28,11 +31,8 @@ class MainViewController: UIViewController, LoadingViewController {
     
     private var currentUnit: Unit = .celsius {
         didSet{
-            if let currentLocation {
-                let lat = currentLocation.coordinate.latitude
-                let lon = currentLocation.coordinate.longitude
-                getWeatherData(lat: "\(lat)", lon: "\(lon)")
-                txtField.text = "\(lat) , \(lon)"
+            if !tableModel.isEmpty {
+                searchAction()
                 unitButton.setTitle(currentUnit.name, for: .normal)
             }
         }
@@ -61,7 +61,7 @@ class MainViewController: UIViewController, LoadingViewController {
         tf.textAlignment = .left
         tf.keyboardType =  .numbersAndPunctuation
         tf.placeholder = "Enter lat, lon"
-        
+        tf.delegate = self
         let paddingView = UIView(frame: CGRectMake(0, 0, 12, tf.frame.height))
         tf.leftView = paddingView
         tf.leftViewMode = .always
@@ -70,20 +70,24 @@ class MainViewController: UIViewController, LoadingViewController {
     
     private lazy var searchButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 0.5)
+        btn.backgroundColor = .disabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
         btn.setTitle("Search", for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(searchAction), for: .touchUpInside)
+        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(.gray, for: .disabled)
+        btn.isEnabled = false
         return btn
     }()
     
     private lazy var locationButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 0.5)
+        btn.backgroundColor = .disabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(.gray, for: .disabled)
         btn.setTitle("Current location", for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(getCurrentLocation), for: .touchUpInside)
@@ -92,12 +96,15 @@ class MainViewController: UIViewController, LoadingViewController {
     
     private lazy var unitButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 0.5)
+        btn.backgroundColor = .disabledBlue
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
         btn.setTitle(currentUnit.name, for: .normal)
         btn.layer.cornerRadius = 8
         btn.addTarget(self, action: #selector(showActionSheet), for: .touchUpInside)
+        btn.setTitleColor(.white, for: .normal)
+        btn.setTitleColor(.gray, for: .disabled)
+        btn.isEnabled = false
         return btn
     }()
     
@@ -208,6 +215,13 @@ class MainViewController: UIViewController, LoadingViewController {
     }
 }
 
+extension MainViewController: UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        searchButton.isEnabled = !string.isEmpty
+        return true
+    }
+}
+
 extension MainViewController: UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -229,7 +243,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension MainViewController{
     @objc func showActionSheet(){
-        guard currentLocation != nil else {return}
+        guard !tableModel.isEmpty else {return}
         let actionSheet = UIAlertController(title: "Choose a unit", message: nil, preferredStyle: .actionSheet)
         Unit.allCases.forEach{ unit in
             let action = UIAlertAction(title: unit.name, style: .default) { [weak self] _ in

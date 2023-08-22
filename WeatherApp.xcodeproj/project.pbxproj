@@ -28,6 +28,7 @@
 		E6253CD02A946565003B8B1F /* WeatherListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CCF2A946565003B8B1F /* WeatherListController.swift */; };
 		E6253CD22A94699E003B8B1F /* Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CD12A94699E003B8B1F /* Composer.swift */; };
 		E6253CDA2A949089003B8B1F /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CD92A949089003B8B1F /* Unit.swift */; };
+		E6253CDC2A94942B003B8B1F /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6253CDB2A94942B003B8B1F /* UIColor+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		E6253CCF2A946565003B8B1F /* WeatherListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherListController.swift; sourceTree = "<group>"; };
 		E6253CD12A94699E003B8B1F /* Composer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Composer.swift; sourceTree = "<group>"; };
 		E6253CD92A949089003B8B1F /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
+		E6253CDB2A94942B003B8B1F /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				E6253CCD2A94641B003B8B1F /* UITableView+Dequeueing.swift */,
 				E6253CBE2A9391A7003B8B1F /* UIViewController+Alert.swift */,
 				E6253CC92A93CC6D003B8B1F /* UIViewController+Loader.swift */,
+				E6253CDB2A94942B003B8B1F /* UIColor+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				E6253CB12A93445B003B8B1F /* HttpRequester.swift in Sources */,
 				E6253CCA2A93CC6D003B8B1F /* UIViewController+Loader.swift in Sources */,
 				E6253CBD2A939078003B8B1F /* WeatherViewModel.swift in Sources */,
+				E6253CDC2A94942B003B8B1F /* UIColor+Extensions.swift in Sources */,
 				E6253CB72A935BD3003B8B1F /* ListTableCell.swift in Sources */,
 				E6253C992A9342EF003B8B1F /* SceneDelegate.swift in Sources */,
 				E6253CBB2A939057003B8B1F /* RemoteWeather.swift in Sources */,
