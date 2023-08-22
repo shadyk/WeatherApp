@@ -13,7 +13,7 @@ class MainViewController: UIViewController, LoadingViewController {
     private var weatherStatus: WeatherStatus?{
         didSet{
             guard let weatherStatus else { return }
-            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.3) {
+            UIView.animate(withDuration: 1) {
                 self.view.backgroundColor = weatherStatus.color
                 self.tableView.backgroundColor = weatherStatus.color
             }
